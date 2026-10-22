@@ -1,0 +1,35 @@
+/** Chat-room navigation bar dimensions in iPhone logical points. */
+export const wechatNavTokens = {
+  navHeight: 39,
+  navHorizontalPadding: 12,
+  backIconSize: 18,
+  backIconStroke: 1.5,
+  badgeHeight: 24,
+  badgeMinWidth: 40,
+  badgeRadius: 12,
+  badgeFontSize: 14.5,
+  titleFontSize: 16.5,
+  titleWeight: 625,
+  titleLetterSpacing: -0.2,
+  moreIconDotSize: 3,
+  moreIconGap: 4.333,
+  dividerColor: "#8e8e8e",
+  dividerOpacity: 0.16,
+} as const;
+
+export const wechatNavCssVars = {
+  "--wechat-nav-height": `${wechatNavTokens.navHeight}px`,
+  "--wechat-nav-padding": `${wechatNavTokens.navHorizontalPadding}px`,
+  "--wechat-nav-back-size": `${wechatNavTokens.backIconSize}px`,
+  "--wechat-nav-badge-height": `${wechatNavTokens.badgeHeight}px`,
+  "--wechat-nav-badge-min-width": `${wechatNavTokens.badgeMinWidth}px`,
+  "--wechat-nav-badge-radius": `${wechatNavTokens.badgeRadius}px`,
+  "--wechat-nav-badge-font-size": `${wechatNavTokens.badgeFontSize}px`,
+  "--wechat-nav-title-size": `${wechatNavTokens.titleFontSize}px`,
+  "--wechat-nav-title-weight": String(wechatNavTokens.titleWeight),
+  "--wechat-nav-title-spacing": `${wechatNavTokens.titleLetterSpacing}px`,
+  "--wechat-nav-dot-size": `${wechatNavTokens.moreIconDotSize}px`,
+  "--wechat-nav-dot-gap": `${wechatNavTokens.moreIconGap}px`,
+  "--wechat-nav-divider-color": wechatNavTokens.dividerColor,
+  "--wechat-nav-divider-opacity": String(wechatNavTokens.dividerOpacity),
+} as const;

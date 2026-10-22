@@ -1,0 +1,40 @@
+/** iPhone 15 Pro Max status bar geometry, in logical points. */
+export const statusBarTokens = {
+  height: 59,
+  paddingLeft: 38,
+  paddingRight: 28.667,
+  fontSize: 18.5,
+  timeOffsetY: -1,
+  iconSize: {
+    signalWidth: 22,
+    signalHeight: 15,
+    wifiWidth: 18,
+    wifiHeight: 14,
+    batteryWidth: 28.333,
+    batteryHeight: 15,
+  },
+  signalToNetwork: 6.333,
+  networkToBattery: 7,
+  islandWidth: 121,
+  islandHeight: 35,
+  islandTop: 12,
+} as const;
+
+export const statusBarCssVars = {
+  "--status-height": `${statusBarTokens.height}px`,
+  "--status-padding-left": `${statusBarTokens.paddingLeft}px`,
+  "--status-padding-right": `${statusBarTokens.paddingRight}px`,
+  "--status-font-size": `${statusBarTokens.fontSize}px`,
+  "--status-time-offset-y": `${statusBarTokens.timeOffsetY}px`,
+  "--status-signal-width": `${statusBarTokens.iconSize.signalWidth}px`,
+  "--status-signal-height": `${statusBarTokens.iconSize.signalHeight}px`,
+  "--status-wifi-width": `${statusBarTokens.iconSize.wifiWidth}px`,
+  "--status-wifi-height": `${statusBarTokens.iconSize.wifiHeight}px`,
+  "--status-battery-width": `${statusBarTokens.iconSize.batteryWidth}px`,
+  "--status-battery-height": `${statusBarTokens.iconSize.batteryHeight}px`,
+  "--status-signal-to-network": `${statusBarTokens.signalToNetwork}px`,
+  "--status-network-to-battery": `${statusBarTokens.networkToBattery}px`,
+  "--status-island-width": `${statusBarTokens.islandWidth}px`,
+  "--status-island-height": `${statusBarTokens.islandHeight}px`,
+  "--status-island-top": `${statusBarTokens.islandTop}px`,
+} as const;

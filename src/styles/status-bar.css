@@ -1,0 +1,54 @@
+/* Screenshot-calibrated status items; the Dynamic Island keeps its own geometry. */
+.phone-screen .phone-status .status-time {
+  font-family: "SF Pro Display", "PingFang UI SC", sans-serif;
+  font-size: var(--status-font-size);
+  font-weight: 850;
+  letter-spacing: -.1px;
+  font-variant-numeric: normal;
+  line-height: 22px;
+  transform: translateY(var(--status-time-offset-y)) scale(.975, .96);
+}
+.phone-status .status-icons { transform: translateY(-.667px); }
+.phone-status .status-network {
+  font-family: "SF Pro Display", "PingFang UI SC", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0;
+  transform: translate(1px, 1.133px);
+}
+.phone-status .status-battery {
+  transform: none;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: #a5a5a5;
+}
+.phone-status .status-battery-fill {
+  border-radius: 5px 0 0 5px;
+  background: #000;
+}
+.phone-status .status-battery::after {
+  top: 5px;
+  right: -3px;
+  width: 1.5px;
+  height: 5px;
+  background: #999;
+  opacity: 1;
+}
+.phone-status .status-battery b {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: "SF Pro Display", "PingFang UI SC", sans-serif;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 15px;
+  letter-spacing: 0;
+  text-shadow: none;
+  /* Center the visible numeral ink, accounting for this font's baseline. */
+  transform: translateY(.533px);
+}

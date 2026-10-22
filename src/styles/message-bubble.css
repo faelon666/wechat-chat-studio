@@ -1,0 +1,132 @@
+.message-row-text {
+  gap: var(--text-avatar-gap);
+  margin-bottom: var(--text-message-gap);
+}
+
+.message-row-text.message-row-own:has(+ .message-row-text.message-row-own),
+.message-row-text:not(.message-row-own):has(+ .message-row-text:not(.message-row-own)) {
+  margin-bottom: var(--text-same-side-message-gap);
+}
+
+.message-row-text.message-row-own:has(+ .message-row-text:not(.message-row-own)),
+.message-row-text:not(.message-row-own):has(+ .message-row-text.message-row-own) {
+  margin-bottom: var(--text-opposite-side-message-gap);
+}
+
+.message-row-text .text-avatar-box {
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--text-avatar-size);
+  height: var(--text-avatar-size);
+}
+
+.message-row-text .message-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.message-row-text .message-content-text {
+  max-width: var(--text-bubble-max-width);
+}
+
+.ios-app-preview .message-row-text .text-message-bubble {
+  max-width: 100%;
+  min-height: 0;
+  padding: var(--text-bubble-padding-y) var(--text-bubble-padding-x);
+  border-radius: var(--text-bubble-radius);
+  background: #fff;
+  box-shadow: none;
+  color: #111;
+  font-family: "PingFang UI SC", "PingFang SC", sans-serif;
+  font-variation-settings: "wght" var(--text-bubble-font-weight), "wdth" 100;
+  font-size: var(--text-bubble-font-size);
+  font-weight: var(--text-bubble-font-weight);
+  line-height: var(--text-bubble-line-height);
+  letter-spacing: 0;
+  font-synthesis: none;
+}
+
+.ios-app-preview .message-row-text .text-message-bubble.message-bubble-own {
+  background: var(--text-bubble-green);
+}
+
+.ios-app-preview .message-row-text .text-bubble-compact {
+  min-width: var(--text-bubble-min-width);
+  text-align: center;
+}
+
+.message-row-text .text-message-bubble::before {
+  content: none;
+}
+
+.text-bubble-copy {
+  position: relative;
+  display: block;
+}
+
+.text-bubble-tail {
+  position: absolute;
+  top: 14px;
+  left: calc(-1 * var(--text-bubble-tail-size));
+  width: calc(var(--text-bubble-tail-size) + .5px);
+  height: 12px;
+  background: #fff;
+  /* Curved shoulders and tip, with a half-point overlap to avoid a seam. */
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5.5 12'%3E%3Cpath d='M5.5 0H5C5 1.5 4.3 2.3 3.2 3.3L.7 5.2Q-.2 6 .7 6.8L3.2 8.7C4.3 9.7 5 10.5 5 12H5.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.message-row-own .text-bubble-tail {
+  right: calc(-1 * var(--text-bubble-tail-size));
+  left: auto;
+  background: var(--text-bubble-green);
+  transform: scaleX(-1);
+}
+
+.chat-dark.ios-app-preview .message-row-text .text-message-bubble {
+  background: #353f38;
+  color: #f0f3f0;
+}
+.chat-dark .message-row-text .text-bubble-tail { background: #353f38; }
+.chat-dark.ios-app-preview .message-row-text .text-message-bubble.message-bubble-own,
+.chat-dark .message-row-own.message-row-text .text-bubble-tail { background: #306f4b; }
+
+.text-bubble-debug-label { display: none; }
+.compare-show-bounds .message-row-text .text-avatar-box { outline: 1px solid #149eca; outline-offset: 1px; }
+.compare-show-bounds .phone-screen .message-row-text .message-avatar { outline: 0; }
+.compare-show-bounds .phone-screen .message-row-text .text-message-bubble { outline: 1px solid #ec4b68; outline-offset: 1px; }
+.compare-show-bounds .message-row-text .text-bubble-copy { outline: 1px solid #4c78df; }
+.compare-show-bounds .message-row-text .text-bubble-tail { outline: 1px solid #9b52bf; clip-path: none; }
+.compare-show-bounds .message-row-text .text-bubble-debug-label {
+  position: absolute;
+  z-index: 9;
+  display: block;
+  padding: 1px 2px;
+  border-radius: 2px;
+  background: #242b2de8;
+  color: #fff;
+  font: 9px/11px Arial, sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.compare-show-bounds .text-avatar-box > .text-bubble-debug-label,
+.compare-show-bounds .text-message-bubble > .text-bubble-debug-label { top: -16px; left: 0; }
+.compare-show-bounds .text-bubble-copy > .text-bubble-debug-label { bottom: -14px; left: 0; }
+.compare-show-bounds .text-bubble-tail > .text-bubble-debug-label { top: -16px; left: -3px; }
+.compare-show-bounds .message-row-own .text-bubble-tail > .text-bubble-debug-label { transform: scaleX(-1); }
+
+/* Conversation timestamps, calibrated against the supplied iOS screenshots. */
+.ios-app-preview .message-time {
+  margin: 26px 0 18px;
+  color: #aaa;
+  font-family: "PingFang UI SC", "PingFang SC", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  font-variation-settings: "wght" 500, "wdth" 100;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-align: center;
+}

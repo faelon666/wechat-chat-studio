@@ -1,0 +1,36 @@
+.ios-app-preview .chat-bottom.wechat-input-bar {
+  height: var(--input-bar-height);
+  border-top: .5px solid var(--input-bar-divider-color);
+  background: var(--input-bar-background);
+}
+.ios-app-preview .wechat-input-bar .chat-input-row {
+  height: var(--input-bar-controls-height);
+  padding: 0 var(--input-bar-horizontal-padding);
+  gap: 0;
+  color: #252725;
+}
+.wechat-input-bar .input-bar-icon {
+  display: block;
+  flex: none;
+  width: var(--input-bar-icon-size);
+  height: var(--input-bar-icon-size);
+}
+.wechat-input-bar .input-bar-voice { margin-right: var(--input-bar-input-gap); }
+.ios-app-preview .wechat-input-bar .fake-input {
+  min-width: 0;
+  height: var(--input-bar-input-height);
+  margin-right: var(--input-bar-input-gap);
+  border: 0;
+  border-radius: var(--input-bar-input-radius);
+  background: #fff;
+  box-shadow: 0 0 0 .5px #ededed;
+}
+.wechat-input-bar .input-bar-icon { transform: translateY(-1px); }
+.wechat-input-bar .input-bar-voice { transform: translateY(-.5px); }
+.wechat-input-bar .input-bar-emoji { margin-right: var(--input-bar-action-gap); }
+.home-indicator.home-indicator-hidden { background: linear-gradient(#f5f5f5, #f7f7f7); }
+.home-indicator-hidden::after { content: none; }
+.chat-dark .wechat-input-bar { --input-bar-background: #242a26; --input-bar-divider-color: #364038; }
+.chat-dark .wechat-input-bar .chat-input-row { color: #f2f2f2; }
+.chat-dark .wechat-input-bar .fake-input { border-color: #353f38; background: #353f38; }
+.compare-show-bounds .wechat-input-bar :is(.input-bar-icon, .fake-input) { outline: 1px dashed #e74767; outline-offset: 1px; }

@@ -1,0 +1,86 @@
+.message-row.message-row-red-packet {
+  gap: var(--red-packet-avatar-gap);
+}
+
+.red-packet-card {
+  --red-packet-main-color: var(--red-packet-orange);
+  position: relative;
+  width: var(--red-packet-card-width);
+  max-width: 100%;
+  border-radius: var(--red-packet-radius);
+  color: #fff;
+}
+
+.red-packet-opened { --red-packet-main-color: var(--red-packet-opened-orange); }
+.red-packet-expired { --red-packet-main-color: var(--red-packet-expired-orange); }
+
+.red-packet-main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--red-packet-icon-gap);
+  height: var(--red-packet-main-height);
+  padding: 0 var(--red-packet-padding-x);
+  border-radius: var(--red-packet-radius) var(--red-packet-radius) 0 0;
+  background: var(--red-packet-main-color);
+}
+
+.red-packet-tail {
+  position: absolute;
+  top: var(--red-packet-tail-top);
+  width: var(--red-packet-tail-size);
+  height: var(--red-packet-tail-height);
+  color: var(--red-packet-main-color);
+}
+
+.red-packet-right .red-packet-tail { right: calc(-1 * var(--red-packet-tail-size)); }
+.red-packet-left .red-packet-tail { left: calc(-1 * var(--red-packet-tail-size)); transform: scaleX(-1); }
+
+.red-packet-icon {
+  display: block;
+  flex: none;
+  width: var(--red-packet-icon-size);
+  height: var(--red-packet-icon-height);
+}
+
+.red-packet-title {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  color: #fff;
+  font-family: "PingFang UI SC", "PingFang SC", "SF Pro Text", sans-serif;
+  font-size: var(--red-packet-title-size);
+  font-weight: var(--red-packet-title-weight);
+  line-height: var(--red-packet-title-line-height);
+  transform: translateY(var(--red-packet-title-offset-y));
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.red-packet-footer {
+  display: flex;
+  align-items: center;
+  height: var(--red-packet-footer-height);
+  padding: 0 var(--red-packet-footer-padding-x);
+  border-radius: 0 0 var(--red-packet-radius) var(--red-packet-radius);
+  background: var(--red-packet-main-color);
+  color: #fff;
+  font-family: "PingFang UI SC", "PingFang SC", "SF Pro Text", sans-serif;
+  font-size: var(--red-packet-footer-size);
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.red-packet-footer > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: var(--red-packet-footer-opacity);
+  transform: translateY(var(--red-packet-footer-offset-y));
+}
+
+.compare-show-bounds :is(.red-packet-card, .red-packet-main, .red-packet-icon, .red-packet-title, .red-packet-footer, .red-packet-tail) {
+  outline: 1px dashed #f45c66;
+  outline-offset: 1px;
+}

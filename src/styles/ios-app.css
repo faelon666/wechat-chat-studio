@@ -1,0 +1,120 @@
+.ios-app-preview {
+  background: #ededed;
+  color: #111;
+  font-family: "SF Pro Text", "PingFang UI SC", sans-serif;
+  font-weight: 400;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+.phone-screen .phone-status { background: transparent; }
+.phone-screen .status-time { font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", sans-serif; }
+.ios-app-preview .chat-header { height: 44px; background: #f7f7f7; }
+.ios-app-preview .chat-header strong,
+.ios-page-nav strong { font-family: "SF Pro Display", "PingFang UI SC", sans-serif; font-size: 17px; font-weight: 600; }
+.ios-app-preview .chat-back { height: 44px; border: 0; background: transparent; padding: 0; gap: 2px; }
+.ios-app-preview .ios-back-arrow { display: block; flex: none; width: 24px; height: 26px; }
+.ios-app-preview .ios-more { width: 27px; height: 27px; }
+.ios-icon { display: inline-block; flex: none; width: 28px; height: 28px; background: currentColor; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: center; mask-position: center; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+
+.ios-app-preview .chat-scroll { background: #ededed url("/assets/images/chat_background.png") center / cover; }
+.ios-app-preview .message-bubble { max-width: 301px; padding: 8px 12px; border-radius: 8px; color: #111; font-size: 17px; font-weight: 400; line-height: 1.48; }
+.ios-app-preview .message-bubble-own { background: #95ec69; }
+.ios-app-preview .message-time { color: #888; font-size: 12px; font-weight: 400; line-height: 18px; }
+.ios-app-preview .video-message { border-radius: 8px; font-size: 17px; font-weight: 400; }
+.ios-app-preview .chat-bottom { height: 60px; background: #f7f7f7; }
+.ios-app-preview .chat-input-row { height: 60px; gap: 12px; }
+.ios-app-preview .chat-input-row .ios-icon { width: 29px; height: 29px; }
+.ios-app-preview .fake-input { height: 38px; border: 1px solid #ececec; border-radius: 8px; }
+.ios-input-plus { display: grid; flex: none; place-items: center; width: 28px; height: 28px; border: 2px solid currentColor; border-radius: 50%; font-family: "PingFang UI SC", sans-serif; font-size: 28px; font-weight: 400; line-height: 20px; padding-bottom: 3px; }
+
+.ios-page-nav { position: relative; display: flex; flex: none; align-items: center; justify-content: center; height: 44px; border-bottom: 1px solid #dcdcdc; background: #f7f7f7; }
+.ios-page-nav strong { line-height: 24px; }
+.ios-page-action { position: absolute; right: 17px; top: 8px; width: 28px; height: 28px; display: grid; place-items: center; }
+.ios-page-action .ios-icon { width: 26px; height: 26px; }
+.ios-app-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; background: #ededed; scrollbar-width: none; }
+.ios-app-scroll::-webkit-scrollbar { display: none; }
+.ios-search-area { height: 52px; display: flex; align-items: center; padding: 0 12px; }
+.ios-search-field { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 36px; border-radius: 9px; background: #fff; color: #999; font-size: 15px; line-height: 20px; }
+.ios-search-field svg { color: #aaa; }
+.ios-chat-list { background: #fff; }
+.ios-chat-cell { position: relative; display: flex; align-items: center; width: 100%; height: 64px; padding: 0 16px; border: 0; background: #fff; text-align: left; color: #111; -webkit-appearance: none; appearance: none; }
+.ios-chat-cell:active { background: #e6e6e6; }
+.ios-chat-cell:not(:last-child)::after { content: ""; position: absolute; bottom: 0; right: 0; left: 76px; height: 1px; background: #e6e6e6; }
+.ios-list-avatar { display: grid; flex: none; place-items: center; width: 48px; height: 48px; margin-right: 12px; overflow: hidden; border-radius: 5px; color: #fff; font-size: 24px; font-weight: 600; }
+.ios-list-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.ios-cell-main { display: flex; flex: 1; flex-direction: column; justify-content: center; min-width: 0; height: 100%; gap: 3px; }
+.ios-cell-top, .ios-cell-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+.ios-cell-top strong { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 17px; font-weight: 500; line-height: 23px; }
+.ios-cell-top small { flex: none; color: #999; font-size: 11px; font-weight: 400; }
+.ios-cell-bottom { height: 20px; }
+.ios-cell-bottom > span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #888; font-size: 14px; line-height: 20px; }
+.ios-cell-bottom em { display: grid; flex: none; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: #f04b43; color: #fff; font-family: "PingFang UI SC", sans-serif; font-size: 10px; font-style: normal; line-height: 17px; }
+.tile-file { background: #6fc48e; }
+.tile-pay { background: #4bb087; }
+.tile-team { background: #46bf9b; }
+.tile-group { background: #e6b878; }
+.tile-friends { background: #eb9c49; }
+.tile-album { background: #75b589; }
+.tile-video { background: #e59e58; }
+.tile-scan { background: #5b9bbf; }
+.tile-star { background: #dcad54; }
+.tile-search { background: #70a8c4; }
+.tile-app { background: #64b8aa; }
+.tile-emoji { background: #d2a450; }
+.tile-settings { background: #829fb5; }
+
+.ios-tab-bottom { flex: none; height: 60px; background: #f7f7f7; }
+.ios-tabbar { display: grid; grid-template-columns: repeat(4, 1fr); height: 60px; border-top: 1px solid #dcdcdc; }
+.ios-tab { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1px; height: 59px; border: 0; background: transparent; color: #888; -webkit-appearance: none; appearance: none; }
+.ios-tab .ios-icon { width: 27px; height: 27px; }
+.ios-tab > span:last-child { font-size: 10px; line-height: 14px; font-weight: 400; }
+.ios-tab.is-active { color: #07c160; }
+
+.ios-section-label { display: flex; align-items: flex-end; height: 32px; padding: 0 16px 5px; color: #888; font-size: 12px; line-height: 16px; }
+.ios-white-group { background: #fff; }
+.ios-contact-cell { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; height: 56px; padding: 0 16px; border: 0; background: #fff; text-align: left; color: #111; font-size: 17px; font-weight: 400; -webkit-appearance: none; appearance: none; }
+.ios-contact-cell:not(:last-child)::after { content: ""; position: absolute; bottom: 0; left: 68px; right: 0; height: 1px; background: #e7e7e7; }
+.ios-contact-avatar { display: grid; flex: none; place-items: center; width: 40px; height: 40px; overflow: hidden; border-radius: 5px; color: #fff; font-size: 21px; font-weight: 600; }
+.ios-contact-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.ios-grouped-scroll { padding: 12px 0 20px; }
+.ios-menu-group { margin-bottom: 12px; background: #fff; }
+.ios-menu-row { position: relative; display: flex; align-items: center; gap: 15px; height: 56px; padding: 0 16px; background: #fff; }
+.ios-menu-row:not(:last-child)::after { content: ""; position: absolute; left: 60px; right: 0; bottom: 0; height: 1px; background: #e8e8e8; }
+.ios-menu-symbol { display: grid; flex: none; place-items: center; width: 28px; height: 28px; border-radius: 6px; color: #fff; font-size: 18px; font-weight: 600; }
+.ios-menu-name { flex: 1; font-size: 17px; line-height: 24px; }
+.ios-menu-row > svg { color: #c3c3c3; }
+.ios-profile-card { display: flex; align-items: center; gap: 14px; min-height: 142px; margin-bottom: 12px; padding: 16px 18px; background: #fff; }
+.ios-profile-card > img { flex: none; width: 64px; height: 64px; border-radius: 6px; object-fit: cover; }
+.ios-profile-card > div { display: flex; flex: 1; flex-direction: column; gap: 5px; min-width: 0; }
+.ios-profile-card strong { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 21px; line-height: 28px; font-weight: 600; }
+.ios-profile-card div > span { color: #888; font-size: 13px; line-height: 18px; }
+.ios-profile-card .ios-profile-state { align-self: flex-start; margin-top: 3px; padding: 1px 8px; border: 1px solid #dedede; border-radius: 10px; color: #777; font-size: 11px; }
+.ios-qr { font-size: 20px; color: #888; }
+.ios-profile-card > svg { color: #c3c3c3; }
+
+.chat-dark.ios-app-preview { background: #191919; color: #f2f2f2; }
+.chat-dark.ios-app-preview .chat-header,
+.chat-dark.ios-app-preview .ios-page-nav,
+.chat-dark.ios-app-preview .ios-tab-bottom,
+.chat-dark.ios-app-preview .chat-bottom { background: #252525; color: #f2f2f2; }
+.phone-screen.chat-dark .status-icons { color: #f2f2f2; }
+.chat-dark.ios-app-preview .ios-app-scroll { background: #191919; }
+.chat-dark.ios-app-preview .ios-chat-list,
+.chat-dark.ios-app-preview .ios-chat-cell,
+.chat-dark.ios-app-preview .ios-white-group,
+.chat-dark.ios-app-preview .ios-contact-cell,
+.chat-dark.ios-app-preview .ios-menu-group,
+.chat-dark.ios-app-preview .ios-menu-row,
+.chat-dark.ios-app-preview .ios-profile-card { background: #252525; color: #f2f2f2; }
+.chat-dark.ios-app-preview .ios-search-field,
+.chat-dark.ios-app-preview .fake-input { background: #333; }
+.chat-dark.ios-app-preview .chat-scroll { background: #191919; }
+.chat-dark.ios-app-preview .message-bubble { color: #f2f2f2; }
+.chat-dark.ios-app-preview .message-bubble-own { background: #306f4b; }
+.chat-dark.ios-app-preview .ios-cell-top strong,
+.chat-dark.ios-app-preview .ios-menu-name { color: #f2f2f2; }
+
+.preview-screen-switcher { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin: 0 0 11px; padding: 3px; border-radius: 9px; background: var(--border); }
+.preview-screen-switcher button { min-width: 0; height: 29px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font-size: 10px; white-space: nowrap; }
+.preview-screen-switcher button.is-active { background: var(--panel); color: var(--green); font-weight: 600; box-shadow: 0 1px 3px #00000013; }

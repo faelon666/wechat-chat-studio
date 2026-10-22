@@ -1,0 +1,92 @@
+.message-row.message-row-voice {
+  gap: var(--voice-avatar-gap);
+}
+
+.voice-message-bubble {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-width: var(--voice-min-width);
+  max-width: var(--voice-max-width);
+  height: var(--voice-height);
+  padding: 0 var(--voice-padding);
+  border-radius: var(--voice-radius);
+  background: var(--voice-white);
+  color: #242424;
+  white-space: nowrap;
+}
+
+.voice-message-right {
+  justify-content: flex-end;
+  background: var(--voice-green);
+}
+
+.voice-message-left {
+  justify-content: flex-start;
+}
+
+.voice-message-content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--voice-content-gap);
+}
+
+.voice-message-right .voice-message-content {
+  margin-right: var(--voice-waveform-inset);
+}
+
+.voice-message-left .voice-message-content {
+  margin-left: var(--voice-waveform-inset);
+}
+
+.voice-message-bubble::after {
+  content: "";
+  position: absolute;
+  top: calc((var(--voice-height) - var(--voice-tail-height)) / 2);
+  width: var(--voice-tail-width);
+  height: var(--voice-tail-height);
+  background: inherit;
+  clip-path: polygon(0 4%, 0 96%, 68% 67%, 100% 53%, 100% 47%, 68% 33%);
+}
+
+.voice-message-right::after {
+  right: calc(-1 * var(--voice-tail-width));
+}
+
+.voice-message-left::after {
+  left: calc(-1 * var(--voice-tail-width));
+  transform: scaleX(-1);
+}
+
+.voice-duration {
+  font-family: "SF Pro Text", "PingFang UI SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--voice-duration-font-size);
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.voice-waveform {
+  display: block;
+  flex: none;
+  width: var(--voice-waveform-size);
+  height: var(--voice-waveform-size);
+}
+
+.voice-waveform-left {
+  transform: scaleX(-1);
+}
+
+.voice-message-unread {
+  position: absolute;
+  top: 15px;
+  right: -13px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ec4545;
+}
+
+.chat-dark .voice-message-left { background: #353f38; color: #f0f3f0; }
+.chat-dark .voice-message-right { background: #306f4b; color: #f0f3f0; }

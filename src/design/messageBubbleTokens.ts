@@ -1,0 +1,36 @@
+/** Ordinary text-message geometry in iPhone logical points. */
+export const messageBubbleTokens = {
+  bubbleRadius: 3.5,
+  bubblePaddingX: 11,
+  bubblePaddingY: 7,
+  bubbleTailSize: 5,
+  bubbleMinWidth: 44,
+  bubbleMaxWidth: 284,
+  bubbleFontSize: 16.5,
+  bubbleFontWeight: 500,
+  bubbleLineHeight: 24.65,
+  bubbleGreenColor: "#96e375",
+  avatarSize: 40,
+  avatarGap: 11.5,
+  messageGap: 16.5,
+  sameSideMessageGap: 15,
+  oppositeSideMessageGap: 18,
+} as const;
+
+export const messageBubbleCssVars = {
+  "--text-bubble-radius": `${messageBubbleTokens.bubbleRadius}px`,
+  "--text-bubble-padding-x": `${messageBubbleTokens.bubblePaddingX}px`,
+  "--text-bubble-padding-y": `${messageBubbleTokens.bubblePaddingY}px`,
+  "--text-bubble-tail-size": `${messageBubbleTokens.bubbleTailSize}px`,
+  "--text-bubble-min-width": `${messageBubbleTokens.bubbleMinWidth}px`,
+  "--text-bubble-max-width": `${messageBubbleTokens.bubbleMaxWidth}px`,
+  "--text-bubble-font-size": `${messageBubbleTokens.bubbleFontSize}px`,
+  "--text-bubble-font-weight": String(messageBubbleTokens.bubbleFontWeight),
+  "--text-bubble-line-height": `${messageBubbleTokens.bubbleLineHeight}px`,
+  "--text-bubble-green": messageBubbleTokens.bubbleGreenColor,
+  "--text-avatar-size": `${messageBubbleTokens.avatarSize}px`,
+  "--text-avatar-gap": `${messageBubbleTokens.avatarGap}px`,
+  "--text-message-gap": `${messageBubbleTokens.messageGap}px`,
+  "--text-same-side-message-gap": `${messageBubbleTokens.sameSideMessageGap}px`,
+  "--text-opposite-side-message-gap": `${messageBubbleTokens.oppositeSideMessageGap}px`,
+} as const;
