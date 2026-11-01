@@ -10,9 +10,13 @@ const prefix = "/__shared-stickers";
 export function stickerPlugin(): Plugin {
   const root = path.resolve(process.env.WECHAT_STICKER_DIR || ".local-data/stickers");
   const manifest = path.join(root, "catalog.json");
+  const seedRoot = path.resolve("server/sticker-seed");
   async function catalog(): Promise<Catalog> {
     try { return JSON.parse(await readFile(manifest, "utf8")); }
-    catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") return { entries: [], removed: [] }; throw error; }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        try { return JSON.parse(await readFile(path.join(seedRoot, "catalog.json"), "utf8")); }
+        catch (seedError) { if ((seedError as NodeJS.ErrnoException).code === "ENOENT") return { entries: [], removed: [] }; throw seedError; }
+      } throw error; }
   }
   async function locked<T>(action: () => Promise<T>): Promise<T> {
     await mkdir(root, { recursive: true });
@@ -39,7 +43,9 @@ export function stickerPlugin(): Plugin {
       if (req.headers.origin && new URL(req.headers.origin).host !== req.headers.host) return send(403, { error: "不允许跨站访问" });
       const imageMatch = url.pathname.match(/^\/__shared-stickers\/images\/([a-f0-9]{64})$/);
       if (req.method === "GET" && imageMatch) {
-        const image = await readFile(path.join(root, `${imageMatch[1]}.image`), "utf8");
+        let image: string;
+        try { image = await readFile(path.join(root, `${imageMatch[1]}.image`), "utf8"); }
+        catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; image = await readFile(path.join(seedRoot, `${imageMatch[1]}.image`), "utf8"); }
         const match = image.match(/^data:(image\/(?:png|jpeg|webp|gif));base64,(.+)$/s);
         if (!match) return send(404, { error: "图片不存在" });
         res.setHeader("Content-Type", match[1]); res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
