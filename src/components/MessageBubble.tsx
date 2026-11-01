@@ -1,4 +1,5 @@
 import SmoothText from "./SmoothText";
+import { resolveEmojiText } from "../store/emoji";
 import type { CSSProperties } from "react";
 import { Check, Video } from "lucide-react";
 import { messageBubbleCssVars } from "../design/messageBubbleTokens";
@@ -24,7 +25,7 @@ export default function MessageBubble({ message, sender, own }: Props) {
   const isText = message.type === "text";
   const isVoice = message.type === "voice";
   const isRedPacket = message.type === "redpacket";
-  const text = message.text || "…";
+  const text = resolveEmojiText(message.text || "…");
   const compactText = isText && Array.from(text).length === 1;
 
   return (
@@ -33,6 +34,7 @@ export default function MessageBubble({ message, sender, own }: Props) {
       <div className={`message-content ${isText ? "message-content-text" : ""}`}>
         {isText && <div className={`message-bubble text-message-bubble ${own ? "message-bubble-own" : ""} ${compactText ? "text-bubble-compact" : ""}`}><span className="text-bubble-copy"><SmoothText text={text} /><span className="text-bubble-debug-label" aria-hidden="true">text bounds</span></span><span className="text-bubble-tail" aria-hidden="true"><span className="text-bubble-debug-label">tail bounds</span></span><span className="text-bubble-debug-label" aria-hidden="true">bubble bounds</span></div>}
         {message.type === "image" && <div className="image-message"><img src={message.image || "/sample-image.svg"} alt="聊天图片" /></div>}
+        {message.type === "sticker" && <div className="sticker-message" style={{ width: Math.max(64, Math.min(200, message.stickerSize || 120)) }}><img src={message.image || "/sample-image.svg"} alt={message.text || "表情包"} /></div>}
         {isVoice && <VoiceMessageBubble duration={message.seconds ?? 2} direction={own ? "right" : "left"} unread={!own && !message.read} />}
         {message.type === "video" && <div className={`video-message ${own ? "video-message-own" : ""}`}><Video size={22} strokeWidth={1.9} /><span>{message.videoStatus === "finished" ? `通话时长 ${message.duration || "00:10"}` : "视频通话邀请"}</span></div>}
         {isRedPacket && <RedPacketMessage title={message.note || "恭喜发财，大吉大利"} footer={message.redPacketFooter || "红包"} direction={own ? "right" : "left"} status={message.redPacketStatus || "normal"} />}

@@ -29,6 +29,7 @@ function messageSummary(message?: Message) {
   switch (message.type) {
     case "text": return message.text || "消息";
     case "image": return "[图片]";
+    case "sticker": return "[表情包]";
     case "voice": return "[语音]";
     case "video": return message.videoStatus === "finished" ? `通话时长 ${message.duration || "00:10"}` : "[视频通话]";
     case "redpacket": return "[红包] 恭喜发财，大吉大利";

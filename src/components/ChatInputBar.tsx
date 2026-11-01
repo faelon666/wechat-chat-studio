@@ -11,6 +11,6 @@ function InputIcon({ kind }: { kind: "voice" | "emoji" | "plus" }) {
 
 export default function ChatInputBar() {
   return <div className="chat-bottom wechat-input-bar" style={inputBarCssVars as CSSProperties} aria-label="微信输入栏预览"><div className="chat-input-row">
-    <InputIcon kind="voice" /><div className="fake-input" aria-label="空白消息输入框" /><InputIcon kind="emoji" /><InputIcon kind="plus" />
+    <InputIcon kind="voice" /><div className="fake-input" aria-label="空白消息输入框" /><button type="button" className="preview-emoji-button" aria-label="打开表情选择器"><InputIcon kind="emoji" /></button><InputIcon kind="plus" />
   </div></div>;
 }

@@ -50,3 +50,4 @@ next-env.d.ts
 /lizi-preview.html
 /public/references/
 /.openai/
+/.local-data/

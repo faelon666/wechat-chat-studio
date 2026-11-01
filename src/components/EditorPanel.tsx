@@ -4,10 +4,12 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { ArrowDown, ArrowUp, Clock3, FileText, Gift, ImagePlus, MessageCircle, Plus, RotateCcw, Trash2, Upload, Video, Volume2, Wallet, X } from "lucide-react";
 import { readImage } from "../hooks/useImageUpload";
 import type { ChatStore } from "../hooks/useChatStore";
+import type { useExportDirectory } from "../hooks/useExportDirectory";
 import type { Message, MessageType } from "../store/types";
+import EmojiPicker from "./EmojiPicker";
 
 type Tab = "dialogue" | "appearance" | "help";
-const typeLabel: Record<MessageType, string> = { text: "文字", time: "时间", image: "图片", voice: "语音", video: "视频", redpacket: "红包", transfer: "转账", file: "文件", recall: "撤回" };
+const typeLabel: Record<MessageType, string> = { text: "文字", time: "时间", image: "图片", sticker: "表情包", voice: "语音", video: "视频", redpacket: "红包", transfer: "转账", file: "文件", recall: "撤回" };
 const actionButtons: { type: MessageType; label: string; icon: typeof Plus }[] = [
   { type: "text", label: "添加文字", icon: MessageCircle }, { type: "time", label: "添加时间", icon: Clock3 },
   { type: "image", label: "添加图片", icon: ImagePlus }, { type: "voice", label: "添加语音", icon: Volume2 },
@@ -20,6 +22,7 @@ function messageSummary(message: Message) {
   if (message.type === "text") return message.text || "空白文字";
   if (message.type === "time") return message.time || "时间";
   if (message.type === "image") return "图片消息";
+  if (message.type === "sticker") return message.text || "表情包";
   if (message.type === "voice") return `${message.seconds || 2} 秒语音`;
   if (message.type === "video") return message.videoStatus === "finished" ? `已通话 ${message.duration || "00:10"}` : "视频邀请";
   if (message.type === "redpacket") return message.note || "恭喜发财，大吉大利";
@@ -28,10 +31,11 @@ function messageSummary(message: Message) {
   return "撤回了一条消息";
 }
 
-export type PreviewEditRequest = { kind: "message" | "person" | "appearance" | "composer"; id?: string; nonce: number };
+export type PreviewEditRequest = { kind: "message" | "person" | "appearance" | "composer" | "emoji"; id?: string; nonce: number };
 
-export default function EditorPanel({ store, editRequest }: { store: ChatStore; editRequest?: PreviewEditRequest | null }) {
+export default function EditorPanel({ store, editRequest, destination }: { store: ChatStore; editRequest?: PreviewEditRequest | null; destination: ReturnType<typeof useExportDirectory> }) {
   const panelRef = useRef<HTMLElement>(null);
+  const [destinationError, setDestinationError] = useState("");
   const { chat } = store;
   const [tab, setTab] = useState<Tab>("dialogue");
   const [text, setText] = useState("没问题!");
@@ -53,11 +57,15 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
   const [dragId, setDragId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const textInputRef = useRef<HTMLTextAreaElement>(null);
+  const editTextRef = useRef<HTMLTextAreaElement>(null);
+  const [emojiSignal, setEmojiSignal] = useState(0);
   const selected = chat.messages.find((message) => message.id === selectedId);
   useEffect(() => {
     if (!editRequest) return;
     setTab(editRequest.kind === "appearance" ? "appearance" : "dialogue");
     if (editRequest.kind === "message") setSelectedId(editRequest.id ?? null);
+    if (editRequest.kind === "emoji") setEmojiSignal(editRequest.nonce);
     const timer = window.setTimeout(() => {
       const panel = panelRef.current;
       let target: HTMLElement | null = null;
@@ -65,6 +73,7 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
       if (editRequest.kind === "person") target = [...(panel?.querySelectorAll<HTMLElement>("[data-person-id]") ?? [])].find(el => el.dataset.personId === editRequest.id) ?? null;
       if (editRequest.kind === "appearance") target = panel?.querySelector(`[data-setting="${editRequest.id}"]`) ?? null;
       if (editRequest.kind === "composer") target = panel?.querySelector("#chat-text") ?? null;
+      if (editRequest.kind === "emoji") target = panel?.querySelector(".emoji-picker") ?? null;
       target?.scrollIntoView({ block: "center", behavior: "smooth" });
       const field = editRequest.kind === "person" ? target?.querySelector<HTMLElement>(".person-name") : target?.matches("input,textarea,select") ? target : target?.querySelector<HTMLElement>("textarea,input,select,button");
       field?.focus({ preventScroll: true });
@@ -81,11 +90,12 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
     event.target.value = "";
   }
 
-  async function uploadMessageImage(event: ChangeEvent<HTMLInputElement>, replaceId?: string) {
+  async function uploadMessageImage(event: ChangeEvent<HTMLInputElement>, replaceId?: string, sticker = false) {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
-      const image = await readImage(file, 1200);
+      if (sticker && file.size > 8 * 1024 * 1024) throw new Error("表情包不能超过 8MB");
+      const image = await readImage(file, sticker ? 320 : 1200, sticker);
       if (replaceId) store.updateMessage(replaceId, { image });
       else store.addMessage({ type: "image", image });
       setNotice("");
@@ -98,7 +108,7 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
     const time = chatDate ? new Date(chatDate) : new Date();
     const displayTime = `${time.getMonth() + 1}月${time.getDate()}日 ${String(time.getHours()).padStart(2, "0")}:${String(time.getMinutes()).padStart(2, "0")}`;
     const payload: Record<MessageType, Omit<Message, "id" | "senderId">> = {
-      text: { type, text: text.trim() || "…" }, time: { type, time: displayTime }, image: { type },
+      text: { type, text: text.trim() || "…" }, time: { type, time: displayTime }, image: { type }, sticker: { type },
       voice: { type, seconds: Math.max(1, Number(voiceSeconds) || 2), read: voiceRead },
       video: { type, videoStatus, duration: callDuration || "00:10" },
       redpacket: { type, amount, note: redNote }, transfer: { type, amount, note: transferNote, received: true },
@@ -112,6 +122,17 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
 
   function editField(key: keyof Message, value: string | number | boolean) {
     if (selected) store.updateMessage(selected.id, { [key]: value });
+  }
+
+  function insertEmoji(token: string, editing = false) {
+    const field = editing ? editTextRef.current : textInputRef.current;
+    const value = editing ? selected?.text || "" : text;
+    const start = field?.selectionStart ?? value.length;
+    const end = field?.selectionEnd ?? value.length;
+    const next = value.slice(0, start) + token + value.slice(end);
+    if (editing && selected) store.updateMessage(selected.id, { text: next });
+    else setText(next);
+    requestAnimationFrame(() => { field?.focus({ preventScroll: true }); field?.setSelectionRange(start + token.length, start + token.length); });
   }
 
   return <section ref={panelRef} className="editor-panel">
@@ -135,7 +156,8 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
 
         <div className="composer-heading"><div><h2>编辑消息</h2><p>当前发送者：<strong>{chat.people.find((person) => person.id === chat.activeSenderId)?.name}</strong></p></div></div>
         <label className="field-label" htmlFor="chat-text">输入聊天内容</label>
-        <textarea id="chat-text" className="chat-textarea" value={text} onChange={(event) => setText(event.target.value)} placeholder="在这里输入聊天内容…" rows={3} />
+        <textarea ref={textInputRef} id="chat-text" className="chat-textarea" value={text} onChange={(event) => setText(event.target.value)} placeholder="在这里输入聊天内容…" rows={3} />
+        <EmojiPicker openSignal={emojiSignal} onEmoji={token => insertEmoji(token)} onSticker={sticker => { store.addMessage({ type: "sticker", image: sticker.image, text: sticker.name, stickerSize: 120 }); setSelectedId(null); setNotice("已发送表情包"); }} />
         <div className="field-grid">
           <label>金额 <span>¥</span><input value={amount} onChange={(event) => setAmount(event.target.value)} inputMode="decimal" placeholder="12000" /></label>
           <label>红包备注<input value={redNote} onChange={(event) => setRedNote(event.target.value)} placeholder="恭喜发财，大吉大利" /></label>
@@ -160,9 +182,15 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
         </div>)}</div>
         {selected && <div className="selected-editor"><div className="selected-editor-title"><strong>编辑{typeLabel[selected.type]}消息</strong><button type="button" onClick={() => setSelectedId(null)} aria-label="关闭编辑"><X size={16} /></button></div>
           <label>发送者<select value={selected.senderId} onChange={(event) => editField("senderId", event.target.value)}>{chat.people.map((person) => <option key={person.id} value={person.id}>{person.name}</option>)}</select></label>
-          {selected.type === "text" && <label>聊天内容<textarea value={selected.text || ""} onChange={(event) => editField("text", event.target.value)} rows={2} /></label>}
+          {selected.type === "text" && <><label>聊天内容<textarea ref={editTextRef} value={selected.text || ""} onChange={(event) => editField("text", event.target.value)} rows={2} /></label><EmojiPicker editing onEmoji={token => insertEmoji(token, true)} /></>}
           {selected.type === "time" && <label>显示时间<input value={selected.time || ""} onChange={(event) => editField("time", event.target.value)} /></label>}
           {selected.type === "image" && <label className="replace-image">更换图片<input type="file" accept="image/*" onChange={(event) => uploadMessageImage(event, selected.id)} /></label>}
+          {selected.type === "sticker" && <>
+            <label>表情包名称<input value={selected.text || ""} onChange={event => editField("text", event.target.value)} /></label>
+            <label>显示尺寸（64–200）<input aria-label="表情包尺寸" type="range" min="64" max="200" value={selected.stickerSize || 120} onChange={event => editField("stickerSize", Number(event.target.value))} /></label>
+            <label className="replace-image">更换表情包<input type="file" accept="image/png,image/webp,image/jpeg,image/gif" onChange={event => uploadMessageImage(event, selected.id, true)} /></label>
+            <EmojiPicker editing onSticker={sticker => store.updateMessage(selected.id, { image: sticker.image, text: sticker.name })} />
+          </>}
           {selected.type === "voice" && <><label>语音秒数<input type="number" min="1" value={selected.seconds || 2} onChange={(event) => editField("seconds", Number(event.target.value))} /></label><label className="check-label"><input type="checkbox" checked={selected.read ?? true} onChange={(event) => editField("read", event.target.checked)} /> 已读</label></>}
           {selected.type === "video" && <><label>通话状态<select value={selected.videoStatus || "invite"} onChange={(event) => editField("videoStatus", event.target.value)}><option value="invite">视频邀请</option><option value="finished">已通话</option></select></label><label>通话时长<input value={selected.duration || ""} onChange={(event) => editField("duration", event.target.value)} /></label></>}
           {(selected.type === "redpacket" || selected.type === "transfer") && <><label>金额<input value={selected.amount || ""} onChange={(event) => editField("amount", event.target.value)} /></label><label>备注<input value={selected.note || ""} onChange={(event) => editField("note", event.target.value)} /></label>{selected.type === "transfer" && <label className="check-label"><input type="checkbox" checked={selected.received ?? false} onChange={(event) => editField("received", event.target.checked)} /> 已收款</label>}</>}
@@ -180,6 +208,16 @@ export default function EditorPanel({ store, editRequest }: { store: ChatStore; 
         <label data-setting="batteryLevel">电池电量<input type="number" min="0" max="100" value={chat.settings.batteryLevel ?? 31} onChange={(event) => store.updateSettings({ batteryLevel: Math.max(0, Math.min(100, Number(event.target.value) || 0)) })} /></label>
         <div data-setting="wallpaper" className="appearance-field"><span>聊天背景</span><div className="wallpaper-options">{([{ id: "gray", name: "经典灰", className: "wallpaper-swatch-gray" }, { id: "cream", name: "暖米色", className: "wallpaper-swatch-cream" }, { id: "mint", name: "薄荷绿", className: "wallpaper-swatch-mint" }] as const).map((wallpaper) => <button key={wallpaper.id} className={chat.settings.wallpaper === wallpaper.id ? "is-selected" : ""} type="button" onClick={() => store.updateSettings({ wallpaper: wallpaper.id })}><span className={wallpaper.className} />{wallpaper.name}</button>)}</div></div>
         <label className="theme-toggle"><span><strong>暗色模式</strong><small>应用到编辑器与手机聊天界面</small></span><input type="checkbox" checked={chat.settings.darkMode} onChange={(event) => store.updateSettings({ darkMode: event.target.checked })} /><i /></label>
+        <div className="appearance-field export-location-setting">
+          <span>截图保存位置</span>
+          <p>{destination.directory?.name || "浏览器默认下载位置"}</p>
+          <div className="export-location-actions">
+            <button type="button" disabled={!destination.supported || !destination.ready} onClick={async () => { try { await destination.choose(); setDestinationError(""); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) setDestinationError("无法选择保存文件夹，请重试。"); } }}>选择保存文件夹</button>
+            {destination.directory && <button type="button" onClick={async () => { try { await destination.reset(); setDestinationError(""); } catch { setDestinationError("未能切换保存位置，请重试。"); } }}>恢复默认下载</button>}
+          </div>
+          {!destination.supported && <p>当前浏览器不支持选择文件夹，可在 Chrome 或 Edge 中打开本项目设置。</p>}
+          {destinationError && <p className="export-error" role="alert">{destinationError}</p>}
+        </div>
       </div>}
       {tab === "help" && <div className="help-panel"><div className="section-heading"><div><h2>使用说明</h2><p>快速生成属于自己的聊天截图</p></div></div><ol><li><strong>选择发送者</strong><span>点击人物头像切换；第一个人物默认为自己，消息显示在右侧。</span></li><li><strong>填写消息内容</strong><span>设置文字、金额、时间或文件信息，再点击对应的“添加”按钮。</span></li><li><strong>调整对话</strong><span>在消息顺序列表中拖动排序；点击任意消息可修改内容和发送者。</span></li><li><strong>导出图片</strong><span>普通图片保存当前手机画面，长截图包含完整聊天记录。</span></li></ol><div className="help-note">聊天内容自动保存在当前浏览器。图片与头像会压缩后保存，清除浏览器数据可能删除记录。</div></div>}
     </div>

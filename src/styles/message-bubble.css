@@ -130,3 +130,5 @@
   letter-spacing: 0;
   text-align: center;
 }
+.sticker-message { background: transparent; line-height: 0; max-width: 200px; }
+.sticker-message img { display: block; width: 100%; height: auto; max-height: 200px; object-fit: contain; }

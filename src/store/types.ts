@@ -1,4 +1,4 @@
-export type MessageType = "text" | "time" | "image" | "voice" | "video" | "redpacket" | "transfer" | "file" | "recall";
+export type MessageType = "text" | "time" | "image" | "sticker" | "voice" | "video" | "redpacket" | "transfer" | "file" | "recall";
 
 export type Person = {
   id: string;
@@ -13,6 +13,7 @@ export type Message = {
   text?: string;
   time?: string;
   image?: string;
+  stickerSize?: number;
   seconds?: number;
   read?: boolean;
   videoStatus?: "invite" | "finished";
